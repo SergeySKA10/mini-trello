@@ -12,6 +12,36 @@ export function useBoardDnd(initialBoard: IBoard) {
     const [board, setBoard] = useState<IBoard>(initialBoard);
     const [activeCard, setActiveCard] = useState<ICard | null>(null);
 
+    // Добавление карточки
+    const addCard = (columnId: string, title: string, content?: string) => {
+        if (!title.trim()) return;
+
+        const newCard: ICard = {
+            id: `card-${Date.now()}`,
+            title: title.trim(),
+            content: content?.trim(),
+            order: 0,
+            columnId,
+        };
+
+        setBoard((prevBoard) => ({
+            ...prevBoard,
+            columns: prevBoard.columns.map((column) =>
+                column.id === columnId
+                    ? {
+                          ...column,
+                          cards: [newCard, ...column.cards].map(
+                              (card, index) => ({
+                                  ...card,
+                                  order: index,
+                              })
+                          ),
+                      }
+                    : column
+            ),
+        }));
+    };
+
     // обработчик начала перетаскивания
     const handleDragStart = (event: DragStartEvent) => {
         const { active } = event;
@@ -117,6 +147,7 @@ export function useBoardDnd(initialBoard: IBoard) {
     return {
         board,
         activeCard,
+        addCard,
         handleDragStart,
         handleDragEnd,
     };

@@ -80,7 +80,7 @@ const mockBoard: IBoard = {
 };
 
 export function BoardView({ initialBoard = mockBoard }: BoardViewProps) {
-    const { board, activeCard, handleDragEnd, handleDragStart } =
+    const { board, activeCard, addCard, handleDragEnd, handleDragStart } =
         useBoardDnd(initialBoard);
 
     // настройка сенсоров для разных устройств
@@ -111,7 +111,13 @@ export function BoardView({ initialBoard = mockBoard }: BoardViewProps) {
                 {/* Список колонок */}
                 <div className="flex gap-6 overflow-x-auto pb-6">
                     {board.columns.map((column) => {
-                        return <BoardColumn key={column.id} column={column} />;
+                        return (
+                            <BoardColumn
+                                key={column.id}
+                                column={column}
+                                onAddCard={addCard}
+                            />
+                        );
                     })}
                 </div>
 

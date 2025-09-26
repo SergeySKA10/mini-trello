@@ -1,19 +1,25 @@
+'use client';
+
 import { useDroppable } from '@dnd-kit/core';
 import {
     SortableContext,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { useState } from 'react';
 import { BoardCard } from '../BoardCard/BoardCard';
-import { Button } from '@/components/ui/Button/Button';
+import { AddCardForm } from '../AddCardForm/addCardForm';
 import { cn } from '@/lib/utils/cn';
 import { Plus } from 'lucide-react';
 import { type IColumn } from '../../types/board';
 
 interface BoardColumnProps {
     column: IColumn;
+    onAddCard: (columnId: string, title: string, content?: string) => void;
 }
 
-export function BoardColumn({ column }: BoardColumnProps) {
+export function BoardColumn({ column, onAddCard }: BoardColumnProps) {
+    const [isAddingCard, setIsAddingCard] = useState(false);
+
     const { setNodeRef, isOver } = useDroppable({
         id: column.id,
         data: {
@@ -21,6 +27,15 @@ export function BoardColumn({ column }: BoardColumnProps) {
             column,
         },
     });
+
+    const handleAddCard = (
+        columnId: string,
+        title: string,
+        content?: string
+    ) => {
+        onAddCard(columnId, title, content);
+        setIsAddingCard(false);
+    };
 
     return (
         <div
@@ -53,14 +68,24 @@ export function BoardColumn({ column }: BoardColumnProps) {
                 </SortableContext>
             </div>
 
-            <Button
-                variant="ghost"
-                size="sm"
-                className="justify-start text-gray-500 hover:text-gray-700"
-            >
-                <Plus className="w-4 h-4 mr-2" />
-                Добавить карточку
-            </Button>
+            {/* Форма добавления карточки */}
+            <AddCardForm
+                columnId={column.id}
+                onAddCard={handleAddCard}
+                onCancel={() => setIsAddingCard(false)}
+                isOpen={isAddingCard}
+            />
+
+            {/* Кнопка показа формы (если форма скрыта) */}
+            {!isAddingCard && (
+                <button
+                    onClick={() => setIsAddingCard(true)}
+                    className="flex items-center text-gray-500 hover:text-gray-700 text-sm p-2 rounded hover:bg-gray-200 transition-colors"
+                >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Добавить карточку
+                </button>
+            )}
         </div>
     );
 }
