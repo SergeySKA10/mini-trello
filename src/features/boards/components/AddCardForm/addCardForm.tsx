@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button/Button';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
-import { X, Plus } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { X } from 'lucide-react';
+// import { cn } from '@/lib/utils/cn';
 
 interface AddCardFormProps {
     columnId: string;
@@ -29,17 +29,7 @@ export function AddCardForm({
     };
 
     if (!isOpen) {
-        return (
-            <Button
-                variant="ghost"
-                size="sm"
-                className="justify-start text-gray-500 hover: text-gray-700 w-full"
-                onClick={() => {}}
-            >
-                <Plus className="w-4 h-4 mr-2" />
-                Добавить карточку
-            </Button>
-        );
+        return null;
     }
 
     const handleSubmit = () => {};

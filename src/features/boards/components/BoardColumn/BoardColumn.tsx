@@ -69,15 +69,14 @@ export function BoardColumn({ column, onAddCard }: BoardColumnProps) {
             </div>
 
             {/* Форма добавления карточки */}
-            <AddCardForm
-                columnId={column.id}
-                onAddCard={handleAddCard}
-                onCancel={() => setIsAddingCard(false)}
-                isOpen={isAddingCard}
-            />
-
-            {/* Кнопка показа формы (если форма скрыта) */}
-            {!isAddingCard && (
+            {isAddingCard ? (
+                <AddCardForm
+                    columnId={column.id}
+                    onAddCard={handleAddCard}
+                    onCancel={() => setIsAddingCard(false)}
+                    isOpen={isAddingCard}
+                />
+            ) : (
                 <button
                     onClick={() => setIsAddingCard(true)}
                     className="flex items-center text-gray-500 hover:text-gray-700 text-sm p-2 rounded hover:bg-gray-200 transition-colors"
