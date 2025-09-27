@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/Button/Button';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
 import { X } from 'lucide-react';
@@ -32,7 +32,10 @@ export function AddCardForm({
         return null;
     }
 
-    const handleSubmit = () => {};
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onAddCard(columnId, title, content);
+    };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-3">
