@@ -8,16 +8,18 @@ import {
 import { useState } from 'react';
 import { BoardCard } from '../BoardCard/BoardCard';
 import { AddCardForm } from '../AddCardForm/addCardForm';
+import { useAppDispatch } from '@/stores/hooks/hooks';
+import { addCard } from '@/stores/slices/board-slice';
 import { cn } from '@/lib/utils/cn';
 import { Plus } from 'lucide-react';
 import { type IColumn } from '../../types/board';
 
 interface BoardColumnProps {
     column: IColumn;
-    onAddCard: (columnId: string, title: string, content?: string) => void;
 }
 
-export function BoardColumn({ column, onAddCard }: BoardColumnProps) {
+export function BoardColumn({ column }: BoardColumnProps) {
+    const dispatch = useAppDispatch();
     const [isAddingCard, setIsAddingCard] = useState(false);
 
     const { setNodeRef, isOver } = useDroppable({
@@ -33,7 +35,7 @@ export function BoardColumn({ column, onAddCard }: BoardColumnProps) {
         title: string,
         content?: string
     ) => {
-        onAddCard(columnId, title, content);
+        dispatch(addCard({ columnId, title, content }));
         setIsAddingCard(false);
     };
 
