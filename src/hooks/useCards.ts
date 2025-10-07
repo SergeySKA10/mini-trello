@@ -34,7 +34,7 @@ export const useUpdateCard = (columnId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ id, ...updates }: ICard & { id: string }) =>
+        mutationFn: ({ id, ...updates }: Partial<ICard> & { id: string }) =>
             apiClient.put<ICard>(`/columns/${columnId}/cards`, id, updates),
         onSuccess: (data, variables) => {
             queryClient.setQueryData(

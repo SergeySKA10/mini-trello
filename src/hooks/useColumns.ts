@@ -34,7 +34,7 @@ export const useUpdateColumns = (boardId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ id, ...updates }: IColumn & { id: string }) => {
+        mutationFn: ({ id, ...updates }: Partial<IColumn> & { id: string }) => {
             return apiClient.put<IColumn>(
                 `/boards/${boardId}/columns`,
                 id,

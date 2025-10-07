@@ -61,7 +61,7 @@ export function CardItem({ card, columnId }: CardItemProps) {
     const handleSave = async (updates: { title: string; content?: string }) => {
         try {
             await updateCardMutation.mutateAsync({
-                ...card,
+                id: card.id,
                 ...updates,
             });
             setIsEditing(false);
