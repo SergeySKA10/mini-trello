@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { IBoard, ICard, IColumn } from '@/features/boards/types/board';
+import type { IBoard, ICard, IColumn } from '@/types/board';
 
 interface BoardState {
     currentBoard: IBoard | null;

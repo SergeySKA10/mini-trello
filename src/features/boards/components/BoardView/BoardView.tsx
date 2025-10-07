@@ -13,7 +13,7 @@ import { useAppSelector, useAppDispatch } from '@/stores/hooks/hooks';
 import { useState } from 'react';
 import { moveCard } from '@/stores/slices/board-slice';
 import { cn } from '@/lib/utils/cn';
-import type { ICard } from '../../types/board';
+import type { ICard } from '../../../../types/board';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 
 export function BoardView() {

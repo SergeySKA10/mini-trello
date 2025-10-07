@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { ICard } from '../../types/board';
+import type { ICard } from '../../../../types/board';
 import { Button } from '@/components/ui/Button/Button';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
 import { useAppDispatch } from '@/stores/hooks/hooks';

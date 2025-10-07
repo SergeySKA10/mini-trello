@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api/client';
-import type { IColumn } from '@/features/boards/types/board';
+import type { IColumn } from '@/types/board';
 
 export const useColumns = (boardId: string) => {
     return useQuery({

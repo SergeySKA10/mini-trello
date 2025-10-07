@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { CardActions } from '../CardActions/CardActions';
 import { useAppDispatch } from '@/stores/hooks/hooks';
 import { deleteCard } from '@/stores/slices/board-slice';
-import { type ICard } from '../../types/board';
+import { type ICard } from '../../../../types/board';
 import { cn } from '@/lib/utils/cn';
 
 interface BoardCardProps {

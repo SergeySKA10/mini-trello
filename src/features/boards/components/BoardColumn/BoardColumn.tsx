@@ -13,7 +13,7 @@ import { useAppDispatch } from '@/stores/hooks/hooks';
 import { addCard } from '@/stores/slices/board-slice';
 import { cn } from '@/lib/utils/cn';
 import { Plus } from 'lucide-react';
-import type { IColumn, ICard } from '../../types/board';
+import type { IColumn, ICard } from '../../../../types/board';
 
 interface BoardColumnProps {
     column: IColumn;
