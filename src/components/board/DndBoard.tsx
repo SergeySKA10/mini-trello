@@ -10,7 +10,7 @@ import {
 import { Column } from '@/components/column/Column';
 import { CardItem } from '@/components/card/CardItem';
 import { useColumns } from '@/hooks/useColumns';
-import { useDnDActions } from '@/hooks/useDnDActions';
+import { useDnDActionsEnhanced } from '@/hooks/useDnDActionsEnhanced';
 import { useState } from 'react';
 import type { ICard } from '@/types/board';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
@@ -24,7 +24,7 @@ export function DndBoard({ boardId }: DndBoardProps) {
     const [activeCard, setActiveCard] = useState<ICard | null>(null);
 
     const { data: columns = [], isLoading, error } = useColumns(boardId);
-    const { handleCardMove } = useDnDActions();
+    const { handleCardMove, isMoving } = useDnDActionsEnhanced();
 
     const handleDragStart = (event: DragStartEvent) => {
         const { active } = event;

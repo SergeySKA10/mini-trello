@@ -15,6 +15,7 @@ interface Toast {
 
 interface ToastContextType {
     toasts: Toast[];
+    // error?: (message: string) => void;
     addToast: (toast: Omit<Toast, 'id'>) => void;
     removeToast: (id: string) => void;
 }

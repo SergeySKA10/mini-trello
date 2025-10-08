@@ -1,11 +1,17 @@
-import { BoardView } from '@/features/boards/components/BoardView/BoardView';
-// import { Board } from '@/components/board/Board';
+// import { BoardView } from '@/features/boards/components/BoardView/BoardView';
+import { BoardMigrationWrapper } from '@/components/board/BoardMigrationWrapper';
 
-export default function Home() {
+interface BoardPageProps {
+    params: {
+        id: string;
+    };
+}
+
+export default function Home({ params }: BoardPageProps) {
     return (
         <main>
             {/* <BoardView /> */}
-            {/* <Board id/> */}
+            <BoardMigrationWrapper boardId={params.id} />
         </main>
     );
 }

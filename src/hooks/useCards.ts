@@ -38,12 +38,12 @@ export const useUpdateCard = (columnId: string) => {
             apiClient.put<ICard>(`/columns/${columnId}/cards`, id, updates),
         onSuccess: (data, variables) => {
             queryClient.setQueryData(
-                ['columns', variables.columnId, 'cards'],
-                data
+                ['columns', columnId, 'cards'],
+                (old: ICard[] = []) =>
+                    old.map((card) =>
+                        card.id === variables.id ? { ...card, ...data } : card
+                    )
             );
-            queryClient.invalidateQueries({
-                queryKey: ['columns', columnId, 'cards'],
-            });
         },
     });
 };
