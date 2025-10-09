@@ -1,5 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useCreateCard, useMoveCard } from './useCards';
+import {
+    useCreateCard,
+    useUpdateCard,
+    useDeleteCard,
+    useMoveCard,
+} from './useCards';
 import type { ICard } from '@/types/board';
 
 export const useCreateCardWithOptimistic = () => {
@@ -10,32 +15,30 @@ export const useCreateCardWithOptimistic = () => {
         newCard: Omit<ICard, 'id'> & { columnId: string }
     ) => {
         const tempId = `temp-${Date.now()}`;
+        const { columnId, ...cardData } = newCard;
 
-        // Отменяем текущие запросы
         await queryClient.cancelQueries({
-            queryKey: ['columns', newCard.columnId, 'cards'],
+            queryKey: ['columns', columnId, 'cards'],
         });
 
-        // Сохраняем предыдущее состояние для отката
         const previousCards = queryClient.getQueryData<ICard[]>([
             'columns',
-            newCard.columnId,
+            columnId,
             'cards',
         ]);
 
         // Оптимистичное обновление
         queryClient.setQueryData<ICard[]>(
-            ['columns', newCard.columnId, 'cards'],
-            (old = []) => [...old, { ...newCard, id: tempId }]
+            ['columns', columnId, 'cards'],
+            (old = []) => [...old, { ...cardData, id: tempId, columnId }]
         );
 
         try {
-            // Выполняем мутацию
             const result = await createCardMutation.mutateAsync(newCard);
 
             // Заменяем временный ID на настоящий
             queryClient.setQueryData<ICard[]>(
-                ['columns', newCard.columnId, 'cards'],
+                ['columns', columnId, 'cards'],
                 (old = []) =>
                     old.map((card) => (card.id === tempId ? result : card))
             );
@@ -44,7 +47,7 @@ export const useCreateCardWithOptimistic = () => {
         } catch (error) {
             // Откатываем при ошибке
             queryClient.setQueryData(
-                ['columns', newCard.columnId, 'cards'],
+                ['columns', columnId, 'cards'],
                 previousCards
             );
             throw error;
@@ -54,6 +57,45 @@ export const useCreateCardWithOptimistic = () => {
     return {
         ...createCardMutation,
         mutateAsync: optimisticCreate,
+    };
+};
+
+export const useDeleteCardWithOptimistic = (columnId: string) => {
+    const deleteCardMutation = useDeleteCard(columnId);
+    const queryClient = useQueryClient();
+
+    const optimisticDelete = async (cardId: string) => {
+        await queryClient.cancelQueries({
+            queryKey: ['columns', columnId, 'cards'],
+        });
+
+        const previousCards = queryClient.getQueryData<ICard[]>([
+            'columns',
+            columnId,
+            'cards',
+        ]);
+
+        // Оптимистичное удаление
+        queryClient.setQueryData<ICard[]>(
+            ['columns', columnId, 'cards'],
+            (old = []) => old.filter((card) => card.id !== cardId)
+        );
+
+        try {
+            await deleteCardMutation.mutateAsync(cardId);
+        } catch (error) {
+            // Откатываем при ошибке
+            queryClient.setQueryData(
+                ['columns', columnId, 'cards'],
+                previousCards
+            );
+            throw error;
+        }
+    };
+
+    return {
+        ...deleteCardMutation,
+        mutateAsync: optimisticDelete,
     };
 };
 

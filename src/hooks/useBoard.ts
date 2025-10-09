@@ -8,12 +8,25 @@ export const useBoards = () =>
         queryFn: () => apiClient.get<IBoard[]>('/boards'),
     });
 
-export const useBoard = (id: string) =>
-    useQuery({
+// export const useBoard = (id: string) =>
+//     useQuery({
+//         queryKey: ['boards', id],
+//         queryFn: () => apiClient.get<IBoard>('/boards', id),
+//         enabled: !!id,
+//     });
+
+export const useBoard = (id: string) => {
+    console.log('useBoard called with id:', id);
+
+    return useQuery({
         queryKey: ['boards', id],
-        queryFn: () => apiClient.get<IBoard>('/boards', id),
+        queryFn: () => {
+            console.log('Fetching board with id:', id);
+            return apiClient.get<IBoard>('/boards', id);
+        },
         enabled: !!id,
     });
+};
 
 export const useCreateBoard = () => {
     const queryClient = useQueryClient();

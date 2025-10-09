@@ -8,7 +8,8 @@ import {
 import { useState } from 'react';
 import { CardItem } from '@/components/card/CardItem';
 import { CardForm } from '@/components/card/CardForm';
-import { useCards, useCreateCard } from '@/hooks/useCards';
+import { useCards } from '@/hooks/useCards';
+import { useCreateCardWithOptimistic } from '@/hooks/useCardWithOptimistic';
 import type { IColumn } from '@/types/board';
 import { cn } from '@/lib/utils/cn';
 import { Plus } from 'lucide-react';
@@ -21,7 +22,7 @@ export function Column({ column }: ColumnProps) {
     const [isAddingCard, setIsAddingCard] = useState(false);
 
     const { data: cards = [], isLoading } = useCards(column.id);
-    const createCardMutation = useCreateCard();
+    const createCardMutation = useCreateCardWithOptimistic();
 
     const { setNodeRef, isOver } = useDroppable({
         id: column.id,

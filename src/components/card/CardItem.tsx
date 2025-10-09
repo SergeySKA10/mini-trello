@@ -6,7 +6,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { MoreVertical, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button/Button';
 import { CardForm } from './CardForm';
-import { useUpdateCard, useDeleteCard } from '@/hooks/useCards';
+import { useUpdateCard } from '@/hooks/useCards';
+import { useDeleteCardWithOptimistic } from '@/hooks/useCardWithOptimistic';
 import type { ICard } from '@/types/board';
 import { cn } from '@/lib/utils/cn';
 
@@ -20,7 +21,7 @@ export function CardItem({ card, columnId }: CardItemProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const updateCardMutation = useUpdateCard(columnId);
-    const deleteCardMutation = useDeleteCard(columnId);
+    const deleteCardMutation = useDeleteCardWithOptimistic(columnId);
 
     const {
         attributes,
