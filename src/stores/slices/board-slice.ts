@@ -19,12 +19,15 @@ const mockBoard: IBoard = {
     title: 'Мой проект',
     description: 'Тестовая доска',
     userId: 'user-1',
+    createdAt: '',
+    updatedAt: '',
     columns: [
         {
             id: 'col-1',
             title: 'To Do',
             order: 0,
             boardId: '1',
+            createdAt: '',
             cards: [
                 {
                     id: 'card-1',
@@ -40,6 +43,7 @@ const mockBoard: IBoard = {
             title: 'In Progress',
             order: 1,
             boardId: '1',
+            createdAt: '',
             cards: [
                 {
                     id: 'card-2',
@@ -55,6 +59,7 @@ const mockBoard: IBoard = {
             title: 'Done',
             order: 2,
             boardId: '1',
+            createdAt: '',
             cards: [
                 {
                     id: 'card-3',

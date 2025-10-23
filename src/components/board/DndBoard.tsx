@@ -9,8 +9,10 @@ import {
 } from '@dnd-kit/core';
 import { Column } from '@/components/column/Column';
 import { CardItem } from '@/components/card/CardItem';
-import { useColumns } from '@/hooks/useColumns';
-import { useDnDActionsEnhanced } from '@/hooks/useDnDActionsEnhanced';
+// import { useColumns } from '@/hooks/useColumns';
+// import { useDnDActionsEnhanced } from '@/hooks/useDnDActionsEnhanced';
+import { useSmartColumns } from '@/hooks/useSmartBoards';
+import { useSmartDnDActions } from '@/hooks/useSmartDnDActions';
 import { useState } from 'react';
 import type { ICard } from '@/types/board';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
@@ -23,8 +25,8 @@ interface DndBoardProps {
 export function DndBoard({ boardId }: DndBoardProps) {
     const [activeCard, setActiveCard] = useState<ICard | null>(null);
 
-    const { data: columns = [], isLoading, error } = useColumns(boardId);
-    const { handleCardMove, isMoving } = useDnDActionsEnhanced();
+    const { data: columns = [], isLoading, error } = useSmartColumns(boardId);
+    const { handleCardMove } = useSmartDnDActions();
 
     const handleDragStart = (event: DragStartEvent) => {
         const { active } = event;

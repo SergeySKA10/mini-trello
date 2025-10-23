@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import {
     useCreateCard,
-    useUpdateCard,
+    // useUpdateCard,
     useDeleteCard,
     useMoveCard,
 } from './useCards';

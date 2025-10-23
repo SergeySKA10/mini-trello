@@ -15,7 +15,9 @@ interface Toast {
 
 interface ToastContextType {
     toasts: Toast[];
-    // error?: (message: string) => void;
+    success: (title: string, message?: string) => void;
+    error: (title: string, message?: string) => void;
+    warning: (title: string, message?: string) => void;
     addToast: (toast: Omit<Toast, 'id'>) => void;
     removeToast: (id: string) => void;
 }
@@ -39,8 +41,30 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         setToasts((prev) => prev.filter((toast) => toast.id !== id));
     };
 
+    // Вспомогательные методы
+    const success = (title: string, message?: string) => {
+        addToast({ type: 'success', title, message });
+    };
+
+    const error = (title: string, message?: string) => {
+        addToast({ type: 'error', title, message });
+    };
+
+    const warning = (title: string, message?: string) => {
+        addToast({ type: 'warning', title, message });
+    };
+
     return (
-        <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+        <ToastContext.Provider
+            value={{
+                toasts,
+                addToast,
+                removeToast,
+                success,
+                error,
+                warning,
+            }}
+        >
             {children}
             <ToastContainer />
         </ToastContext.Provider>
@@ -108,5 +132,6 @@ export const useToast = () => {
     if (context === undefined) {
         throw new Error('useToast must be used within a ToastProvider');
     }
+
     return context;
 };

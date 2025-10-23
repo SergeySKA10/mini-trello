@@ -3,7 +3,7 @@
 import { AlertCircle, RefreshCw } from 'lucide-react';
 
 interface BoardErrorProps {
-    error: Error;
+    error: Error | null;
     onRetry: () => void;
 }
 
@@ -16,7 +16,7 @@ export function BoardError({ error, onRetry }: BoardErrorProps) {
                     Не удалось загрузить доску
                 </h2>
                 <p className="text-gray-600 mb-2">
-                    {error.message || 'Произошла ошибка при загрузке данных'}
+                    {error?.message || 'Произошла ошибка при загрузке данных'}
                 </p>
                 <button
                     onClick={onRetry}

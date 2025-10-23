@@ -90,7 +90,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useBoard } from '@/hooks/useBoard';
+// import { useBoard } from '@/hooks/useBoard';
+import { useSmartBoard } from '@/hooks/useSmartBoards';
 import { BoardSkeleton } from './BoardSkeleton';
 import { BoardError } from './BoardError';
 import { DndBoard } from './DndBoard';
@@ -114,7 +115,7 @@ export function BoardMigrationWrapper({ boardId }: BoardMigrationWrapperProps) {
         isError,
         error,
         refetch,
-    } = useBoard(boardId);
+    } = useSmartBoard(boardId);
 
     useEffect(() => {
         setMounted(true);
