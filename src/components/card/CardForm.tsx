@@ -4,28 +4,47 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button/Button';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
 import { X } from 'lucide-react';
+import type { ICard } from '@/types/board';
 
-interface AddCardFormProps {
-    columnId: string;
-    onAddCard: (columnId: string, title: string, content?: string) => void;
+interface CardFormProps {
+    card?: ICard; // Если есть - режим редактирования, если нет - создание
+    columnId?: string; // Только для создания
+    onSubmit: (data: { title: string; content?: string }) => Promise<void>;
     onCancel: () => void;
+    isSubmitting?: boolean;
 }
 
-export function AddCardForm({
+export function CardForm({
+    card,
     columnId,
-    onAddCard,
+    onSubmit,
     onCancel,
-}: AddCardFormProps) {
-    const [title, setTitle] = useState<string>('');
-    const [content, setContent] = useState<string>('');
+    isSubmitting = false,
+}: CardFormProps) {
+    const [title, setTitle] = useState<string>(card?.title || '');
+    const [content, setContent] = useState<string>(card?.content || '');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    useEffect(() => {
+        if (card) {
+            setTitle(card.title);
+            setContent(card.content || '');
+        }
+    }, [card]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (title.trim()) {
-            onAddCard(columnId, title, content);
-            setTitle('');
-            setContent('');
+            await onSubmit({
+                title: title.trim(),
+                content: content.trim() || undefined,
+            });
+
+            if (!card) {
+                // В режиме создания очищаем форму
+                setTitle('');
+                setContent('');
+            }
         }
     };
 
@@ -38,12 +57,6 @@ export function AddCardForm({
         }
     };
 
-    // Автофокус на заголовок при открытии
-    useEffect(() => {
-        const titleTextarea = document.querySelector('textarea');
-        titleTextarea?.focus();
-    }, []);
-
     return (
         <form onSubmit={handleSubmit} className="space-y-3">
             <Textarea
@@ -53,6 +66,7 @@ export function AddCardForm({
                 onKeyDown={handleKeyDown}
                 className="resize-none"
                 rows={2}
+                autoFocus
             />
 
             <Textarea
@@ -63,15 +77,25 @@ export function AddCardForm({
                 className="resize-none"
                 rows={2}
             />
+
             <div className="flex gap-2">
-                <Button type="submit" size="sm">
-                    Добавить карточку
+                <Button
+                    type="submit"
+                    size="sm"
+                    disabled={isSubmitting || !title.trim()}
+                >
+                    {isSubmitting
+                        ? 'Сохранение...'
+                        : card
+                        ? 'Сохранить'
+                        : 'Добавить карточку'}
                 </Button>
                 <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={onCancel}
+                    disabled={isSubmitting}
                 >
                     <X className="w-4 h-4" />
                 </Button>

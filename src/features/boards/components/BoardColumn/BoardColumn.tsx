@@ -8,11 +8,12 @@ import {
 import { useState } from 'react';
 import { BoardCard } from '../BoardCard/BoardCard';
 import { AddCardForm } from '../AddCardForm/addCardForm';
+import { EditCardForm } from '../EditCardForm/EditCardForm';
 import { useAppDispatch } from '@/stores/hooks/hooks';
 import { addCard } from '@/stores/slices/board-slice';
 import { cn } from '@/lib/utils/cn';
 import { Plus } from 'lucide-react';
-import { type IColumn } from '../../types/board';
+import type { IColumn, ICard } from '../../../../types/board';
 
 interface BoardColumnProps {
     column: IColumn;
@@ -20,7 +21,8 @@ interface BoardColumnProps {
 
 export function BoardColumn({ column }: BoardColumnProps) {
     const dispatch = useAppDispatch();
-    const [isAddingCard, setIsAddingCard] = useState(false);
+    const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
+    const [editingCard, setEditingCard] = useState<ICard | null>(null);
 
     const { setNodeRef, isOver } = useDroppable({
         id: column.id,
@@ -37,6 +39,14 @@ export function BoardColumn({ column }: BoardColumnProps) {
     ) => {
         dispatch(addCard({ columnId, title, content }));
         setIsAddingCard(false);
+    };
+
+    const handleEditCard = (card: ICard) => {
+        setEditingCard(card);
+    };
+
+    const handleCloseEdit = () => {
+        setEditingCard(null);
     };
 
     return (
@@ -64,9 +74,21 @@ export function BoardColumn({ column }: BoardColumnProps) {
                     items={column.cards.map((card) => card.id)}
                     strategy={verticalListSortingStrategy}
                 >
-                    {column.cards.map((card) => (
-                        <BoardCard key={card.id} card={card} />
-                    ))}
+                    {column.cards.map((card) =>
+                        editingCard?.id === card.id ? (
+                            <EditCardForm
+                                key={card.id}
+                                card={card}
+                                onClose={handleCloseEdit}
+                            />
+                        ) : (
+                            <BoardCard
+                                key={card.id}
+                                card={card}
+                                onEdit={handleEditCard}
+                            />
+                        )
+                    )}
                 </SortableContext>
             </div>
 
@@ -76,7 +98,6 @@ export function BoardColumn({ column }: BoardColumnProps) {
                     columnId={column.id}
                     onAddCard={handleAddCard}
                     onCancel={() => setIsAddingCard(false)}
-                    isOpen={isAddingCard}
                 />
             ) : (
                 <button
