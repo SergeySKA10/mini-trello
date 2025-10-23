@@ -7,7 +7,7 @@ import type { DragEndEvent } from '@dnd-kit/core';
 export const useSmartDnDActions = () => {
     const { isDemo } = useAppMode();
     const moveCard = useSmartMoveCard();
-    const { success, error: showError } = useToast(); // РАСКОММЕНТИРОВАТЬ
+    const { success, error: showError } = useToast();
 
     const handleCardMove = useCallback(
         async (event: DragEndEvent) => {
@@ -56,11 +56,11 @@ export const useSmartDnDActions = () => {
                     });
 
                     if (!isDemo) {
-                        success('Карточка перемещена'); // РАСКОММЕНТИРОВАТЬ
+                        success('Карточка перемещена');
                     }
                 } catch (error) {
                     if (!isDemo) {
-                        showError('Не удалось переместить карточку'); // РАСКОММЕНТИРОВАТЬ
+                        showError('Не удалось переместить карточку');
                     }
                     console.error('Move card error:', error);
                 }

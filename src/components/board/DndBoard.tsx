@@ -9,8 +9,6 @@ import {
 } from '@dnd-kit/core';
 import { Column } from '@/components/column/Column';
 import { CardItem } from '@/components/card/CardItem';
-// import { useColumns } from '@/hooks/useColumns';
-// import { useDnDActionsEnhanced } from '@/hooks/useDnDActionsEnhanced';
 import { useSmartColumns } from '@/hooks/useSmartBoards';
 import { useSmartDnDActions } from '@/hooks/useSmartDnDActions';
 import { useState } from 'react';

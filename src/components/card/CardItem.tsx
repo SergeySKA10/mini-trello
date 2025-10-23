@@ -6,8 +6,6 @@ import { CSS } from '@dnd-kit/utilities';
 import { MoreVertical, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button/Button';
 import { CardForm } from './CardForm';
-// import { useUpdateCard } from '@/hooks/useCards';
-// import { useDeleteCardWithOptimistic } from '@/hooks/useCardWithOptimistic';
 import {
     useSmartUpdateCard,
     useSmartDeleteCard,

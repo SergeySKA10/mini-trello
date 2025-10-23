@@ -3,7 +3,7 @@
 import { useBoard } from '@/hooks/useBoard';
 import { BoardSkeleton } from './BoardSkeleton';
 import { BoardError } from './BoardError';
-import { DnDBoard } from './DndBoard';
+import { DndBoard } from './DndBoard';
 
 interface BoardContainerProps {
     boardId: string;
@@ -44,7 +44,7 @@ export function BoardContainer({ boardId }: BoardContainerProps) {
             </header>
 
             <div className="flex-1 overflow-hidden">
-                <DnDBoard boardId={boardId} />
+                <DndBoard boardId={boardId} />
             </div>
         </div>
     );

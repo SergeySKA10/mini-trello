@@ -8,8 +8,6 @@ import {
 import { useState } from 'react';
 import { CardItem } from '@/components/card/CardItem';
 import { CardForm } from '@/components/card/CardForm';
-// import { useCards } from '@/hooks/useCards';
-// import { useCreateCardWithOptimistic } from '@/hooks/useCardWithOptimistic';
 import { useSmartCards } from '@/hooks/useSmartCards';
 import { useSmartCreateCard } from '@/hooks/useSmartCardMutations';
 import type { IColumn } from '@/types/board';

@@ -1,10 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import {
-    useCreateCard,
-    // useUpdateCard,
-    useDeleteCard,
-    useMoveCard,
-} from './useCards';
+import { useCreateCard, useDeleteCard, useMoveCard } from './useCards';
 import type { ICard } from '@/types/board';
 
 export const useCreateCardWithOptimistic = () => {
