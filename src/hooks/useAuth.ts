@@ -4,26 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/Toast/Toast';
 import { apiClient } from '@/lib/api/client';
-
-interface LoginData {
-    email: string;
-    password: string;
-}
-
-interface RegisterData {
-    email: string;
-    password: string;
-    name: string;
-}
-
-interface AuthResponse {
-    token: string;
-    user: {
-        id: string;
-        email: string;
-        name: string;
-    };
-}
+import type { LoginData, RegisterData, AuthResponse } from '@/types/login';
 
 export const useAuth = () => {
     const router = useRouter();
@@ -32,7 +13,7 @@ export const useAuth = () => {
 
     const loginMutation = useMutation({
         mutationFn: async (credentials: LoginData): Promise<AuthResponse> => {
-            return apiClient.post<AuthResponse>('/auth/login', credentials);
+            return apiClient.login<AuthResponse>('/auth/login', credentials);
         },
         onSuccess: (data) => {
             localStorage.setItem('auth_token', data.token);
@@ -40,14 +21,14 @@ export const useAuth = () => {
             success('Вход выполнен успешно!');
             router.push('/');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             showError('Ошибка входа', error.message);
         },
     });
 
     const registerMutation = useMutation({
         mutationFn: async (userData: RegisterData): Promise<AuthResponse> => {
-            return apiClient.post<AuthResponse>('/auth/register', userData);
+            return apiClient.login<AuthResponse>('/auth/register', userData);
         },
         onSuccess: (data) => {
             localStorage.setItem('auth_token', data.token);
@@ -55,7 +36,7 @@ export const useAuth = () => {
             success('Регистрация выполнена успешно!');
             router.push('/');
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             showError('Ошибка регистрации', error.message);
         },
     });

@@ -1,3 +1,5 @@
+import type { LoginData, RegisterData } from '@/types/login';
+
 const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
@@ -61,6 +63,20 @@ const handleResponse = async (response: Response) => {
 };
 
 export const apiClient = {
+    login: async <T>(
+        endpoint: string,
+        data: LoginData | RegisterData
+    ): Promise<T> => {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(data),
+        });
+
+        const handledResponse = await handleResponse(response);
+        return handledResponse.json();
+    },
+
     get: async <T>(endpoint: string, id?: string): Promise<T> => {
         const url = id
             ? `${API_BASE_URL}${endpoint}/${id}`
