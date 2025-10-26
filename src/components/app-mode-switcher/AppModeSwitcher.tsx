@@ -36,7 +36,7 @@ export function AppModeSwitcher() {
                 <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
                     <button
                         onClick={() => handleModeChange('demo')}
-                        className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+                        className={`cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
                             isDemo
                                 ? 'bg-white text-blue-600 shadow-sm'
                                 : 'text-gray-600 hover:text-gray-800'
@@ -46,7 +46,7 @@ export function AppModeSwitcher() {
                     </button>
                     <button
                         onClick={() => handleModeChange('real-api')}
-                        className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+                        className={`cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
                             !isDemo
                                 ? 'bg-white text-green-600 shadow-sm'
                                 : 'text-gray-600 hover:text-gray-800'
