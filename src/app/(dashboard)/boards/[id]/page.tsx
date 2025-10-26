@@ -1,15 +1,18 @@
 import { BoardMigrationWrapper } from '@/components/board/BoardMigrationWrapper';
 
-interface BoardPageProps {
-    params: {
-        id: string;
-    };
+interface BoardPageParams {
+    id: string;
 }
 
-export default function BoardPage({ params }: BoardPageProps) {
+interface BoardPageProps {
+    params: Promise<BoardPageParams>;
+}
+
+export default async function BoardPage({ params }: BoardPageProps) {
+    const { id } = await params;
     console.log('BoardPage params:', params);
 
-    if (!params.id) {
+    if (!id) {
         return (
             <div className="p-6">
                 <h1 className="text-xl text-red-600">
@@ -22,5 +25,5 @@ export default function BoardPage({ params }: BoardPageProps) {
         );
     }
 
-    return <BoardMigrationWrapper boardId={params.id} />;
+    return <BoardMigrationWrapper boardId={id} />;
 }
