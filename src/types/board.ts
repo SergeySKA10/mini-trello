@@ -4,8 +4,8 @@ export interface IBoard {
     description: string;
     userId: string;
     columns: IColumn[];
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface IColumn {
@@ -14,7 +14,7 @@ export interface IColumn {
     order: number;
     boardId: string;
     cards: ICard[];
-    createdAt: string;
+    createdAt?: string;
 }
 
 export interface ICard {

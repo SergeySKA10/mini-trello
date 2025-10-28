@@ -12,7 +12,7 @@ import { CardItem } from '@/components/card/CardItem';
 import { useSmartColumns } from '@/hooks/useSmartBoards';
 import { useSmartDnDActions } from '@/hooks/useSmartDnDActions';
 import { useState } from 'react';
-import type { ICard } from '@/types/board';
+import type { ICard, IColumn } from '@/types/board';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { cn } from '@/lib/utils/cn';
 
@@ -31,7 +31,7 @@ export function DndBoard({ boardId }: DndBoardProps) {
 
         // Находим активную карточку по всем колонкам
         for (const column of columns) {
-            const card = column.cards?.find((c) => c.id === active.id);
+            const card = column.cards?.find((c: ICard) => c.id === active.id);
             if (card) {
                 setActiveCard(card);
                 break;
@@ -73,7 +73,7 @@ export function DndBoard({ boardId }: DndBoardProps) {
             >
                 {/* Список колонок */}
                 <div className="flex gap-6 overflow-x-auto pb-6">
-                    {columns.map((column) => (
+                    {columns.map((column: IColumn) => (
                         <Column key={column.id} column={column} />
                     ))}
                 </div>

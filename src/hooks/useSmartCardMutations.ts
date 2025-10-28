@@ -55,10 +55,10 @@ export const useSmartCreateCard = () => {
 };
 
 // Умное обновление карточки
-export const useSmartUpdateCard = (columnId: string) => {
+export const useSmartUpdateCard = () => {
     const { isDemo } = useAppMode();
     const dispatch = useAppDispatch();
-    const realUpdateCard = useUpdateCard(columnId);
+    const realUpdateCard = useUpdateCard();
 
     if (isDemo) {
         return {

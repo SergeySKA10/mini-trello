@@ -14,7 +14,7 @@ export default function Home() {
                 {/* Информационная панель */}
                 <div className="mb-8 p-6 bg-white rounded-lg shadow-sm border">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                        🎯 Mini Trello
+                        Mini Trello
                     </h1>
                     <p className="text-gray-600 mb-4">
                         Гибридное приложение для управления задачами
@@ -22,23 +22,23 @@ export default function Home() {
 
                     <div className="flex gap-4 flex-wrap">
                         <Link
-                            href="/test-board"
+                            href="/boards"
                             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
                         >
-                            🧪 Тестовая страница
+                            Мои доски
                         </Link>
                         <Link
-                            href="/boards/1"
+                            href="/test-board"
                             className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
                         >
-                            📋 Реальная доска
+                            Тестовая страница
                         </Link>
-                        {isRealApi && (
+                        {!isRealApi && (
                             <Link
                                 href="/login"
                                 className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
                             >
-                                🔐 Войти в систему
+                                Режим реального API
                             </Link>
                         )}
                     </div>
@@ -57,7 +57,7 @@ export default function Home() {
                                     : 'bg-blue-100 text-blue-800'
                             }`}
                         >
-                            {isRealApi ? '🌐 Реальный API' : '🎮 Демо'}
+                            {isRealApi ? 'Реальный API' : 'Демо'}
                         </span>
                     </div>
 

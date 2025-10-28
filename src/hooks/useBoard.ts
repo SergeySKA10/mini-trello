@@ -5,24 +5,14 @@ import type { IBoard } from '@/types/board';
 export const useBoards = () =>
     useQuery({
         queryKey: ['boards'],
-        queryFn: () => apiClient.get<IBoard[]>('/boards'),
+        queryFn: () => apiClient.boards.getAll(),
     });
 
-// export const useBoard = (id: string) =>
-//     useQuery({
-//         queryKey: ['boards', id],
-//         queryFn: () => apiClient.get<IBoard>('/boards', id),
-//         enabled: !!id,
-//     });
-
 export const useBoard = (id: string) => {
-    console.log('useBoard called with id:', id);
-
     return useQuery({
         queryKey: ['boards', id],
         queryFn: () => {
-            console.log('Fetching board with id:', id);
-            return apiClient.get<IBoard>('/boards', id);
+            return apiClient.boards.getById(id);
         },
         enabled: !!id,
     });
@@ -33,7 +23,7 @@ export const useCreateBoard = () => {
 
     return useMutation({
         mutationFn: (newBoard: Omit<IBoard, 'id'>) =>
-            apiClient.post<IBoard>('/boards', newBoard),
+            apiClient.boards.create<IBoard>(newBoard),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['boards'] });
         },
@@ -45,7 +35,7 @@ export const useUpdateBoard = () => {
 
     return useMutation({
         mutationFn: ({ id, ...updates }: Partial<IBoard> & { id: string }) => {
-            return apiClient.put<IBoard>('/boards', id, updates);
+            return apiClient.boards.update<IBoard>(id, updates);
         },
         onSuccess: (data, variables) => {
             queryClient.setQueryData(['boards', variables.id], data);
@@ -58,7 +48,7 @@ export const useDeleteBoard = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (id: string) => apiClient.delete('/boards', id),
+        mutationFn: (id: string) => apiClient.boards.delete(id),
         onSuccess: (_, deleteId) => {
             queryClient.removeQueries({ queryKey: ['boards', deleteId] });
             queryClient.invalidateQueries({ queryKey: ['boards'] });

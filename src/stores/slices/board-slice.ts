@@ -3,12 +3,14 @@ import type { IBoard, ICard, IColumn } from '@/types/board';
 
 interface BoardState {
     currentBoard: IBoard | null;
+    boards: IBoard[];
     isLoading: boolean;
     error: string | null;
 }
 
 const initialState: BoardState = {
     currentBoard: null,
+    boards: [],
     isLoading: false,
     error: null,
 };
@@ -78,6 +80,7 @@ const boardSlice = createSlice({
     initialState: {
         ...initialState,
         currentBoard: mockBoard,
+        boards: [mockBoard],
     },
     reducers: {
         // добавление карточки
@@ -251,6 +254,63 @@ const boardSlice = createSlice({
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
         },
+
+        // Добавление доски
+        addBoard: (state, action: PayloadAction<IBoard>) => {
+            state.boards.push(action.payload);
+        },
+
+        // Обновление доски
+        updateBoard: (
+            state,
+            action: PayloadAction<{ boardId: string; updates: Partial<IBoard> }>
+        ) => {
+            const { boardId, updates } = action.payload;
+            const boardIndex = state.boards.findIndex(
+                (board) => board.id === boardId
+            );
+
+            if (boardIndex !== -1) {
+                state.boards[boardIndex] = {
+                    ...state.boards[boardIndex],
+                    ...updates,
+                    updatedAt: new Date().toISOString(),
+                };
+            }
+
+            // Также обновляем currentBoard если это текущая доска
+            if (state.currentBoard?.id === boardId) {
+                state.currentBoard = {
+                    ...state.currentBoard,
+                    ...updates,
+                    updatedAt: new Date().toISOString(),
+                };
+            }
+        },
+
+        // Удаление доски
+        deleteBoard: (
+            state: BoardState,
+            action: PayloadAction<{ boardId: string }>
+        ) => {
+            const { boardId } = action.payload;
+            state.boards = state.boards.filter((board) => board.id !== boardId);
+
+            // Если удаляем текущую доску, сбрасываем currentBoard
+            if (state.currentBoard?.id === boardId) {
+                state.currentBoard = null;
+            }
+        },
+
+        // Установка текущей доски
+        setCurrentBoard: (state, action: PayloadAction<IBoard>) => {
+            state.currentBoard = action.payload;
+        },
+
+        // Установка списка досок
+        setBoards: (state, action: PayloadAction<IBoard[]>) => {
+            state.boards = action.payload;
+        },
     },
 });
 
@@ -261,6 +321,11 @@ export const {
     moveCard,
     setError,
     setLoading,
+    addBoard,
+    updateBoard,
+    deleteBoard,
+    setCurrentBoard,
+    setBoards,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

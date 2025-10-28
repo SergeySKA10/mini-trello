@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+import { apiClient } from '@/lib/api/client';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppMode } from '@/context/AppModeContext';
@@ -31,6 +33,11 @@ export default function LoginPage() {
     const handleDemoMode = () => {
         setMode('demo');
         router.push('/');
+    };
+
+    const handleOAuthLogin = (provider: 'google' | 'github') => {
+        const oauthUrl = apiClient.auth.getOAuthUrl(provider);
+        window.location.href = oauthUrl;
     };
 
     return (
@@ -111,6 +118,48 @@ export default function LoginPage() {
                             </Link>
                         </div>
                     </form>
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300" />
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-gray-50 text-gray-500">
+                                    Или войдите через
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-2 gap-3">
+                            <button
+                                onClick={() => handleOAuthLogin('google')}
+                                className="cursor-pointer w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                            >
+                                <Image
+                                    className="w-5 h-5"
+                                    src="/icons/google.svg"
+                                    alt="Google"
+                                    width={20}
+                                    height={20}
+                                />
+                                <span className="ml-2">Google</span>
+                            </button>
+
+                            <button
+                                onClick={() => handleOAuthLogin('github')}
+                                className="cursor-pointer w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                            >
+                                <Image
+                                    className="w-5 h-5"
+                                    src="/icons/github.svg"
+                                    alt="GitHub"
+                                    width={20}
+                                    height={20}
+                                />
+                                <span className="ml-2">GitHub</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AppLayout>

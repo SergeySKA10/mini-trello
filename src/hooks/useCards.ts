@@ -5,7 +5,7 @@ import type { ICard } from '@/types/board';
 export const useCards = (columnId: string) => {
     return useQuery({
         queryKey: ['columns', columnId, 'cards'],
-        queryFn: () => apiClient.get<ICard[]>(`/columns/${columnId}/cards`),
+        queryFn: () => apiClient.cards.getByColumn(columnId),
         enabled: !!columnId,
     });
 };
@@ -18,7 +18,7 @@ export const useCreateCard = () => {
             columnId,
             ...newCard
         }: Omit<ICard, 'id'> & { columnId: string }) =>
-            apiClient.post<ICard>(`/columns/${columnId}/cards`, {
+            apiClient.cards.create<ICard>(columnId, {
                 ...newCard,
                 columnId,
             }),
@@ -30,15 +30,15 @@ export const useCreateCard = () => {
     });
 };
 
-export const useUpdateCard = (columnId: string) => {
+export const useUpdateCard = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: ({ id, ...updates }: Partial<ICard> & { id: string }) =>
-            apiClient.put<ICard>(`/columns/${columnId}/cards`, id, updates),
+            apiClient.cards.update<ICard>(id, updates),
         onSuccess: (data, variables) => {
             queryClient.setQueryData(
-                ['columns', columnId, 'cards'],
+                ['columns', 'cards', variables.id],
                 (old: ICard[] = []) =>
                     old.map((card) =>
                         card.id === variables.id ? { ...card, ...data } : card
@@ -48,18 +48,17 @@ export const useUpdateCard = (columnId: string) => {
     });
 };
 
-export const useDeleteCard = (columnId: string) => {
+export const useDeleteCard = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (id: string) =>
-            apiClient.delete(`/columns/${columnId}/cards`, id),
+        mutationFn: (id: string) => apiClient.cards.delete(id),
         onSuccess: (_, deleteId) => {
             queryClient.removeQueries({
-                queryKey: ['columns', columnId, 'cards', deleteId],
+                queryKey: ['columns', 'cards', deleteId],
             });
             queryClient.invalidateQueries({
-                queryKey: ['columns', columnId, 'cards'],
+                queryKey: ['columns', 'cards', deleteId],
             });
         },
     });
@@ -79,7 +78,7 @@ export const useMoveCard = () => {
             toColumnId: string;
             newPosition: number;
         }) =>
-            apiClient.post(`/cards/${cardId}/move`, {
+            apiClient.cards.move(cardId, {
                 fromColumnId,
                 toColumnId,
                 newPosition,

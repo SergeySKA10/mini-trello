@@ -5,7 +5,7 @@ import type { IColumn } from '@/types/board';
 export const useColumns = (boardId: string) => {
     return useQuery({
         queryKey: ['boards', boardId, 'columns'],
-        queryFn: () => apiClient.get<IColumn[]>(`/boards/${boardId}/columns`),
+        queryFn: () => apiClient.columns.getByBoard(boardId),
         enabled: !!boardId,
     });
 };
@@ -18,7 +18,7 @@ export const useCreateColumn = () => {
             boardId,
             ...newColumn
         }: Omit<IColumn, 'id'> & { boardId: string }) =>
-            apiClient.post<IColumn>(`/boards/${boardId}/columns`, {
+            apiClient.columns.create<IColumn>(boardId, {
                 ...newColumn,
                 boardId,
             }),
@@ -30,16 +30,12 @@ export const useCreateColumn = () => {
     });
 };
 
-export const useUpdateColumns = (boardId: string) => {
+export const useUpdateColumns = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: ({ id, ...updates }: Partial<IColumn> & { id: string }) => {
-            return apiClient.put<IColumn>(
-                `/boards/${boardId}/columns`,
-                id,
-                updates
-            );
+            return apiClient.columns.update<IColumn>(id, updates);
         },
         onSuccess: (data, variables) => {
             queryClient.setQueryData(
@@ -53,56 +49,55 @@ export const useUpdateColumns = (boardId: string) => {
     });
 };
 
-export const useDeleteColumns = (boardId: string) => {
+export const useDeleteColumns = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (id: string) =>
-            apiClient.delete(`/boards/${boardId}/columns`, id),
+        mutationFn: (id: string) => apiClient.columns.delete(id),
         onSuccess: (_, deleteId) => {
             queryClient.removeQueries({
-                queryKey: ['boards', boardId, 'columns', deleteId],
+                queryKey: ['boards', 'columns', deleteId],
             });
             queryClient.invalidateQueries({
-                queryKey: ['boards', boardId, 'columns'],
+                queryKey: ['boards', 'columns', deleteId],
             });
         },
     });
 };
 
-export const useMoveColumn = () => {
-    const queryClient = useQueryClient();
+// export const useMoveColumn = () => {
+//     const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: ({
-            columnId,
-            fromBoardId,
-            toBoardId,
-            newPosition,
-        }: {
-            columnId: string;
-            fromBoardId: string;
-            toBoardId: string;
-            newPosition: number;
-        }) =>
-            apiClient.post(`/columns/${columnId}/move`, {
-                fromBoardId,
-                toBoardId,
-                newPosition,
-            }),
-        onSuccess: (_, variables) => {
-            // Инвалидируем кеш обеих досок (откуда и куда переместили)
-            queryClient.invalidateQueries({
-                queryKey: ['boards', variables.fromBoardId, 'columns'],
-            });
-            queryClient.invalidateQueries({
-                queryKey: ['boards', variables.toBoardId, 'columns'],
-            });
+//     return useMutation({
+//         mutationFn: ({
+//             columnId,
+//             fromBoardId,
+//             toBoardId,
+//             newPosition,
+//         }: {
+//             columnId: string;
+//             fromBoardId: string;
+//             toBoardId: string;
+//             newPosition: number;
+//         }) =>
+//             apiClient.post(`/columns/${columnId}/move`, {
+//                 fromBoardId,
+//                 toBoardId,
+//                 newPosition,
+//             }),
+//         onSuccess: (_, variables) => {
+//             // Инвалидируем кеш обеих досок (откуда и куда переместили)
+//             queryClient.invalidateQueries({
+//                 queryKey: ['boards', variables.fromBoardId, 'columns'],
+//             });
+//             queryClient.invalidateQueries({
+//                 queryKey: ['boards', variables.toBoardId, 'columns'],
+//             });
 
-            // Также инвалидируем общий список досок для sidebar'а
-            queryClient.invalidateQueries({
-                queryKey: ['boards'],
-            });
-        },
-    });
-};
+//             // Также инвалидируем общий список досок для sidebar'а
+//             queryClient.invalidateQueries({
+//                 queryKey: ['boards'],
+//             });
+//         },
+//     });
+// };

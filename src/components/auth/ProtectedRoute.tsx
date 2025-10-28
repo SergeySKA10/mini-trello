@@ -19,10 +19,16 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     useEffect(() => {
         if (isRealApi) {
             const token = localStorage.getItem('auth_token');
+            console.log('ProtectedRoute check:', {
+                isRealApi,
+                hasToken: !!token,
+            });
+
             if (!token) {
                 // Сохраняем текущий URL для редиректа после логина
                 const currentPath =
                     window.location.pathname + window.location.search;
+                console.log('Redirecting to login, current path:', currentPath);
                 router.push(
                     `/login?redirect=${encodeURIComponent(currentPath)}`
                 );

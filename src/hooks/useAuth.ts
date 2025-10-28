@@ -13,7 +13,7 @@ export const useAuth = () => {
 
     const loginMutation = useMutation({
         mutationFn: async (credentials: LoginData): Promise<AuthResponse> => {
-            return apiClient.login<AuthResponse>('/auth/login', credentials);
+            return apiClient.auth.signin(credentials);
         },
         onSuccess: (data) => {
             localStorage.setItem('auth_token', data.token);
@@ -28,7 +28,7 @@ export const useAuth = () => {
 
     const registerMutation = useMutation({
         mutationFn: async (userData: RegisterData): Promise<AuthResponse> => {
-            return apiClient.login<AuthResponse>('/auth/register', userData);
+            return apiClient.auth.signup(userData);
         },
         onSuccess: (data) => {
             localStorage.setItem('auth_token', data.token);

@@ -10,7 +10,7 @@ import { CardItem } from '@/components/card/CardItem';
 import { CardForm } from '@/components/card/CardForm';
 import { useSmartCards } from '@/hooks/useSmartCards';
 import { useSmartCreateCard } from '@/hooks/useSmartCardMutations';
-import type { IColumn } from '@/types/board';
+import type { IColumn, ICard } from '@/types/board';
 import { cn } from '@/lib/utils/cn';
 import { Plus } from 'lucide-react';
 
@@ -70,10 +70,10 @@ export function Column({ column }: ColumnProps) {
             {/* Список карточек */}
             <div className="flex-1 flex flex-col gap-3">
                 <SortableContext
-                    items={cards.map((card) => card.id)}
+                    items={cards.map((card: ICard) => card.id)}
                     strategy={verticalListSortingStrategy}
                 >
-                    {cards.map((card) => (
+                    {cards.map((card: ICard) => (
                         <CardItem
                             key={card.id}
                             card={card}
