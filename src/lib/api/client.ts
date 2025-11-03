@@ -29,6 +29,9 @@ const getHeaders = (): HeadersInit => {
 const handleResponse = async (response: Response) => {
     console.log('Response Status:', response.status, response.statusText);
 
+    // Копируем response для чтения тела
+    const responseClone = response.clone();
+
     if (response.status === 401) {
         // Токен истек или невалидный
         localStorage.removeItem('auth_token');
@@ -41,11 +44,18 @@ const handleResponse = async (response: Response) => {
         let errorMessage = `HTTP error! status: ${response.status}`;
 
         try {
-            const errorData = await response.json();
+            const errorData = await responseClone.json();
             errorMessage = errorData.message || errorMessage;
             console.error('API Error:', errorData);
         } catch {
             console.error('API Error - No JSON response');
+            try {
+                const text = await responseClone.text();
+                console.log('API Error Text:', text);
+                errorMessage = text || errorMessage;
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         throw new Error(errorMessage);

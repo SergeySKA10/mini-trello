@@ -22,7 +22,7 @@ export function CardItem({ card, columnId }: CardItemProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const updateCardMutation = useSmartUpdateCard(columnId);
+    const updateCardMutation = useSmartUpdateCard();
     const deleteCardMutation = useSmartDeleteCard(columnId);
 
     const {
@@ -51,9 +51,11 @@ export function CardItem({ card, columnId }: CardItemProps) {
     };
 
     const handleDelete = async () => {
+        console.log('Deleting card:', card.id, 'from column:', columnId);
         if (confirm('Вы уверены, что хотите удалить эту карточку?')) {
             try {
                 await deleteCardMutation.mutateAsync(card.id);
+                console.log('Card deletion successful');
             } catch (error) {
                 console.error('Failed to delete card:', error);
             }
@@ -62,11 +64,14 @@ export function CardItem({ card, columnId }: CardItemProps) {
     };
 
     const handleSave = async (updates: { title: string; content?: string }) => {
+        console.log('Updating card:', card.id, 'with:', updates);
+
         try {
             await updateCardMutation.mutateAsync({
                 id: card.id,
                 ...updates,
             });
+            console.log('Card update successful');
             setIsEditing(false);
         } catch (error) {
             console.error('Failed to update card:', error);

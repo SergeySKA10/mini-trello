@@ -29,6 +29,8 @@ export const useSmartDnDActions = () => {
             const activeData = active.data.current;
             const overData = over.data.current;
 
+            console.log('DnD Data:', { activeData, overData });
+
             // Обрабатываем только перемещение карточек
             if (activeData?.type === 'card' && activeData.card) {
                 const sourceColumnId = activeData.card.columnId;
@@ -39,11 +41,27 @@ export const useSmartDnDActions = () => {
                     // Перетаскиваем карточку над другой карточкой
                     targetColumnId = overData.card.columnId;
                     newPosition = overData.card.order;
+
+                    console.log('Moving card over another card:', {
+                        targetColumnId,
+                        newPosition,
+                    });
                 } else if (overData?.type === 'column' && overData.column) {
                     // Перетаскиваем карточку в пустую колонку
                     targetColumnId = overData.column.id;
                     newPosition = 0;
+                    console.log('Moving card to empty column:', {
+                        targetColumnId,
+                        newPosition,
+                    });
                 } else {
+                    console.log('Invalid drop target');
+                    return;
+                }
+
+                if (sourceColumnId === targetColumnId) {
+                    console.log('Reordering within same column');
+                    // Здесь будет логика изменения порядка в той же колонке
                     return;
                 }
 
@@ -59,6 +77,7 @@ export const useSmartDnDActions = () => {
                         success('Карточка перемещена');
                     }
                 } catch (error) {
+                    console.error('Move card error:', error);
                     if (!isDemo) {
                         showError('Не удалось переместить карточку');
                     }

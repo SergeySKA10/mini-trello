@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import {
     SortableContext,
@@ -36,14 +37,20 @@ export function Column({ column }: ColumnProps) {
         try {
             await createCardMutation.mutateAsync({
                 columnId: column.id,
-                order: 0,
+                order: cards.length,
                 ...data,
             });
-            setIsAddingCard(false);
         } catch (error) {
             console.error('Failed to create card:', error);
         }
     };
+
+    // useEffect(() => {
+    //     if (createCardMutation.isSuccess) {
+    //         setIsAddingCard(false);
+    //         createCardMutation.reset(); // Сбрасываем состояние мутации
+    //     }
+    // }, [createCardMutation.isSuccess, createCardMutation]);
 
     const handleCancelAdd = () => {
         setIsAddingCard(false);
