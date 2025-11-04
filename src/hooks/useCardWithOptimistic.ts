@@ -56,7 +56,7 @@ export const useCreateCardWithOptimistic = () => {
 };
 
 export const useDeleteCardWithOptimistic = (columnId: string) => {
-    const deleteCardMutation = useDeleteCard(columnId);
+    const deleteCardMutation = useDeleteCard();
     const queryClient = useQueryClient();
 
     const optimisticDelete = async (cardId: string) => {

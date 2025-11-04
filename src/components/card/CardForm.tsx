@@ -83,6 +83,7 @@ export function CardForm({
                     type="submit"
                     size="sm"
                     disabled={isSubmitting || !title.trim()}
+                    onClick={onCancel}
                 >
                     {isSubmitting
                         ? 'Сохранение...'

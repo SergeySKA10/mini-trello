@@ -4,9 +4,23 @@ import { BoardView } from '@/features/boards/components/BoardView/BoardView';
 import { AppLayout } from '@/components/layout/AppLayout';
 import Link from 'next/link';
 import { useAppMode } from '@/context/AppModeContext';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-    const { isRealApi } = useAppMode();
+    const { isRealApi, setMode } = useAppMode();
+    const router = useRouter();
+
+    const handleModeChange = (newMode: 'demo' | 'real-api') => {
+        setMode(newMode);
+
+        // При переключении в реальный режим, проверяем аутентификацию
+        if (newMode === 'real-api') {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                router.push('/login');
+            }
+        }
+    };
 
     return (
         <AppLayout>
@@ -27,19 +41,13 @@ export default function Home() {
                         >
                             Мои доски
                         </Link>
-                        <Link
-                            href="/test-board"
-                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
-                        >
-                            Тестовая страница
-                        </Link>
                         {!isRealApi && (
-                            <Link
-                                href="/login"
-                                className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+                            <button
+                                className="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+                                onClick={() => handleModeChange('real-api')}
                             >
                                 Режим реального API
-                            </Link>
+                            </button>
                         )}
                     </div>
                 </div>

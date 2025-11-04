@@ -45,13 +45,6 @@ export function Column({ column }: ColumnProps) {
         }
     };
 
-    // useEffect(() => {
-    //     if (createCardMutation.isSuccess) {
-    //         setIsAddingCard(false);
-    //         createCardMutation.reset(); // Сбрасываем состояние мутации
-    //     }
-    // }, [createCardMutation.isSuccess, createCardMutation]);
-
     const handleCancelAdd = () => {
         setIsAddingCard(false);
     };
@@ -105,7 +98,7 @@ export function Column({ column }: ColumnProps) {
                 <button
                     onClick={() => setIsAddingCard(true)}
                     disabled={createCardMutation.isPending}
-                    className="flex items-center text-gray-500 hover:text-gray-700 text-sm p-2 rounded hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="cursor-pointer flex items-center text-gray-500 hover:text-gray-700 text-sm p-2 rounded hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-4 h-4 mr-2" />
                     Добавить карточку

@@ -29,9 +29,6 @@ const getHeaders = (): HeadersInit => {
 const handleResponse = async (response: Response) => {
     console.log('Response Status:', response.status, response.statusText);
 
-    // Копируем response для чтения тела
-    const responseClone = response.clone();
-
     if (response.status === 401) {
         // Токен истек или невалидный
         localStorage.removeItem('auth_token');
@@ -41,23 +38,8 @@ const handleResponse = async (response: Response) => {
     }
 
     if (!response.ok) {
-        let errorMessage = `HTTP error! status: ${response.status}`;
-
-        try {
-            const errorData = await responseClone.json();
-            errorMessage = errorData.message || errorMessage;
-            console.error('API Error:', errorData);
-        } catch {
-            console.error('API Error - No JSON response');
-            try {
-                const text = await responseClone.text();
-                console.log('API Error Text:', text);
-                errorMessage = text || errorMessage;
-            } catch (e) {
-                console.log(e);
-            }
-        }
-
+        const errorMessage = `HTTP error! status: ${response.status}`;
+        console.log(errorMessage);
         throw new Error(errorMessage);
     }
 
@@ -204,13 +186,16 @@ export const apiClient = {
         getByBoard: async (boardId: string) => {
             const url = `${API_BASE_URL}/api/boards/${boardId}/columns`;
             // logRequest('GET', url);
-
+            console.log('columns', boardId);
+            console.log('columns', url);
             const response = await fetch(url, {
                 headers: getHeaders(),
             });
 
             const handledResponse = await handleResponse(response);
-            return handledResponse.json();
+            const data = handledResponse.json();
+            console.log('columns data:', data);
+            return data;
         },
 
         create: async <T>(boardId: string, data: Omit<T, 'id'>) => {

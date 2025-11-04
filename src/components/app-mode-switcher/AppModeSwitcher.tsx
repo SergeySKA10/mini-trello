@@ -1,10 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useAppMode } from '@/context/AppModeContext';
 import { useRouter } from 'next/navigation';
 
 export function AppModeSwitcher() {
-    const { mode, setMode, isDemo, isLoading } = useAppMode();
+    const { setMode, isDemo, isLoading } = useAppMode();
     const router = useRouter();
 
     if (isLoading) {
@@ -34,7 +35,8 @@ export function AppModeSwitcher() {
                     Режим:
                 </span>
                 <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
-                    <button
+                    <Link
+                        href="/"
                         onClick={() => handleModeChange('demo')}
                         className={`cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
                             isDemo
@@ -43,7 +45,7 @@ export function AppModeSwitcher() {
                         }`}
                     >
                         Демо
-                    </button>
+                    </Link>
                     <button
                         onClick={() => handleModeChange('real-api')}
                         className={`cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-all ${

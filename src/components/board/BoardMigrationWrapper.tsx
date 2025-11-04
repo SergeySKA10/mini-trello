@@ -61,19 +61,18 @@ export function BoardMigrationWrapper({ boardId }: BoardMigrationWrapperProps) {
 
     return (
         <div className="relative min-h-screen">
-            {/* Переключатель - упростим стили */}
             <div className="fixed top-4 right-4 z-50 bg-white p-3 rounded-lg shadow-lg border">
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
                         type="checkbox"
                         checked={useNewComponents}
                         onChange={(e) => setUseNewComponents(e.target.checked)}
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                        className="cursor-pointer w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                     />
                     <span className="text-sm font-medium">
                         {useNewComponents
-                            ? '🔄 Новые компоненты'
-                            : '⚡ Старые компоненты'}
+                            ? 'Новые компоненты'
+                            : 'Старые компоненты'}
                     </span>
                 </label>
                 <div className="mt-1 text-xs text-gray-500 max-w-[150px]">
@@ -96,7 +95,7 @@ export function BoardMigrationWrapper({ boardId }: BoardMigrationWrapperProps) {
                             {board.description}
                         </p>
                         <div className="mt-2 text-sm text-green-600">
-                            ✅ Новые компоненты (API)
+                            Новые компоненты (API)
                         </div>
                     </header>
                     <div className="flex-1 overflow-hidden">
@@ -110,7 +109,7 @@ export function BoardMigrationWrapper({ boardId }: BoardMigrationWrapperProps) {
                     {/* Добавим отступ сверху */}
                     <div className="bg-yellow-50 border-b border-yellow-200 px-6 py-2">
                         <div className="text-sm text-yellow-800">
-                            ⚡ Старые компоненты (Mock данные)
+                            Старые компоненты (Mock данные)
                         </div>
                     </div>
                     <BoardView />

@@ -94,7 +94,7 @@ export default function BoardsPage() {
                     {isRealApi && (
                         <button
                             onClick={logout}
-                            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900"
+                            className="cursor-pointer flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900"
                         >
                             <LogOut className="w-4 h-4" />
                             Выйти
@@ -123,7 +123,7 @@ export default function BoardsPage() {
                                 <button
                                     type="submit"
                                     disabled={createBoardMutation.isPending}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+                                    className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
                                 >
                                     {createBoardMutation.isPending
                                         ? 'Создание...'
@@ -132,7 +132,7 @@ export default function BoardsPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsCreating(false)}
-                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                                    className="cursor-pointer bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
                                 >
                                     Отмена
                                 </button>
@@ -141,7 +141,7 @@ export default function BoardsPage() {
                     ) : (
                         <button
                             onClick={() => setIsCreating(true)}
-                            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600"
+                            className="cursor-pointer flex items-center gap-2 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600"
                         >
                             <Plus className="w-5 h-5" />
                             Создать доску
@@ -186,7 +186,7 @@ export default function BoardsPage() {
                                         handleDeleteBoard(board.id, board.title)
                                     }
                                     disabled={deleteBoardMutation.isPending}
-                                    className="text-red-600 hover:text-red-800 p-1 rounded disabled:opacity-50"
+                                    className="cursor-pointer text-red-600 hover:text-red-800 p-1 rounded disabled:opacity-50"
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </button>
