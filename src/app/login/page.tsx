@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { apiClient } from '@/lib/api/client';
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useAppMode } from '@/context/AppModeContext';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,11 +13,11 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
-    const searchParams = useSearchParams();
+    // const searchParams = useSearchParams();
     const { setMode } = useAppMode();
     const { login, loginLoading, register, registerLoading } = useAuth();
 
-    const redirectTo = searchParams.get('redirect') || '/';
+    // const redirectTo = searchParams.get('redirect') || '/';
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
